@@ -1,5 +1,5 @@
-export function setEvents(state, events) {
-  state.events = events;
+export function setEvents(state, lists) {
+  state.lists = lists;
 }
 
 export function eventsError(state, payload) {
