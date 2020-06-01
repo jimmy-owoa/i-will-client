@@ -23,6 +23,8 @@ export default {
   ** Global CSS
   */
   css: [
+    'vuesax/dist/vuesax.css',
+    'material-icons/iconfont/material-icons.css'
   ],
   /*
   ** Plugins to load before mounting the App
