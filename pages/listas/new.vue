@@ -10,11 +10,10 @@
                 <v-text-field v-model="list.name" label="Nombre" outlined></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                {{ list.code }}
                 <v-text-field v-model="list.code" label="Código" outlined></v-text-field>
               </v-col>
               <v-col cols="12" sm="12">
-                <v-textarea counter label="Descripción" :value="list.description"></v-textarea>
+                <v-textarea counter label="Descripción" v-model="list.description"></v-textarea>
               </v-col>
 
               <v-col cols="12" md="6">
@@ -84,6 +83,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -95,15 +96,21 @@ export default {
         description: '',
         start_date: new Date().toISOString().substr(0, 10),
         end_date: new Date().toISOString().substr(0, 10),
+        user_id: 1
       }
     }
   },
   methods: {
+    ...mapActions('lists', ['addList']),
     formatDate(date) {
       if (!date) return null
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
     },
+    submit(){
+      this.addList(this.list);
+      this.$router.push("/listas");
+    }
   },
   computed: {
     getStartDate () {
