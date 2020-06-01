@@ -17,57 +17,11 @@
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-menu
-                  v-model="menu_date_picker"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="getStartDate"
-                      label="Fecha de inicio"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker 
-                    v-model="list.start_date" 
-                    @input="menu_date_picker = false"
-                    :first-day-of-week="1"
-                    locale="es"
-                  ></v-date-picker>
-                </v-menu>
+                <list-date-picker @datePicker="setStartDate" />
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-menu
-                  v-model="picker_date_end"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="getEndDate"
-                      label="Fecha de término"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker 
-                    v-model="list.end_date" 
-                    @input="picker_date_end = false"
-                    :first-day-of-week="1"
-                    locale="es"
-                  ></v-date-picker>
-                </v-menu>
+                <list-date-picker @datePicker="setEndDate" />
               </v-col>
 
               <v-col cols="12" sm="12">
@@ -84,12 +38,14 @@
 
 <script>
 import { mapActions } from "vuex";
+import ListDatePicker from '@/components/lists/ListDatePicker';
 
 export default {
+  components: {
+    ListDatePicker
+  },
   data() {
     return {
-      menu_date_picker: false,
-      picker_date_end: false,
       list: {
         name: '',
         code: '',
@@ -102,22 +58,15 @@ export default {
   },
   methods: {
     ...mapActions('lists', ['addList']),
-    formatDate(date) {
-      if (!date) return null
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
-    },
     submit(){
       this.addList(this.list);
       this.$router.push("/listas");
-    }
-  },
-  computed: {
-    getStartDate () {
-      return this.formatDate(this.list.start_date)
     },
-    getEndDate () {
-      return this.formatDate(this.list.end_date)
+    setStartDate (date) {
+      this.list.start_date = date;
+    },
+    setEndDate (date) {
+      this.list.end_date = date;
     },
   },
 }
