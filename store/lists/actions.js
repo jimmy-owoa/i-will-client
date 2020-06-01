@@ -1,8 +1,8 @@
-export async function fetchEvents({ commit }) {
+export async function fetchLists({ commit }) {
   try {
     const { data } = await this.$axios.get('lists');
-    commit("setEvents", data);
+    commit("setLists", data);
   } catch (e) {
-    commit("eventsError", e.message);
+    commit("listsError", e.message);
   } finally {}
 }
