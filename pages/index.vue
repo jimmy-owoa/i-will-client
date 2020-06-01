@@ -1,13 +1,16 @@
 <template>
-  <event-list></event-list>
+  <div>
+    <v-btn color="success">Hola</v-btn>
+    <lists />
+  </div>
 </template>
 
 <script>
-import EventList from '~/components/events/EventList.vue'
+import Lists from '~/components/lists/Lists.vue'
 
 export default {
   components: {
-    EventList
+    Lists
   }
 }
 </script>

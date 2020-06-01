@@ -1,7 +1,7 @@
 <template>
-  <v-row v-if="getEvents">
-    <v-col cols="12" md="12" v-for="e in getEvents" :key="e.id">
-      <v-card @click="goToEvent(e)">
+  <v-row v-if="getLists">
+    <v-col cols="12" md="12" v-for="e in getLists" :key="e.id">
+      <v-card @click="goToList(e)">
         <v-card-title>{{e.name}}</v-card-title>
         <v-card-subtitle>Inicia: {{e.starts}} | Termina: {{e.ends}}</v-card-subtitle>
       </v-card>
@@ -14,16 +14,16 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters("events", ["getEvents"])
+    ...mapGetters("lists", ["getLists"])
   },
   methods: {
-    ...mapActions("events", ["fetchEvents"]),
-    goToEvent(event) {
-      this.$router.push(`eventos/${event.id}`);
+    ...mapActions("lists", ["fetchLists"]),
+    goToList(list) {
+      this.$router.push(`listas/${list.id}`);
     }
   },
   created() {
-    this.fetchEvents();
+    this.fetchLists();
   }
 };
 </script>
