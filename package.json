@@ -15,7 +15,5 @@
     "nuxt": "^2.0.0",
     "vuesax": "^3.11.15"
   },
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }
