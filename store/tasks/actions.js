@@ -15,3 +15,12 @@ export async function fetchMeasureUnits({ commit }) {
     commit("tasksError", e.message);
   } finally {}
 }
+
+export async function fetchListNames({ commit }) {
+  try {
+    const { data } = await this.$axios.get('get_lists');
+    commit("setListNames", data);
+  } catch (e) {
+    commit("tasksError", e.message);
+  } finally {}
+}

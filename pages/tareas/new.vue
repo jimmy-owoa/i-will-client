@@ -24,13 +24,24 @@
 
               <v-col cols="12" md="6" lg="6">
                 <v-combobox
-                  v-model="task.measure_unit_id"
+                  v-model="task.measure_unit_name"
                   :items="measureUnits"
                   label="Unidad de medida"
                 ></v-combobox>
               </v-col>
             </v-row>
             <v-row>
+              <v-col cols="12" md="6">
+                <v-autocomplete
+                  v-model="task.list_id"
+                  :items="listNames"
+                  item-text="name"
+                  item-value="id"
+                  dense
+                  filled
+                  label="Agregar a Lista"
+                ></v-autocomplete>
+              </v-col>
               <v-col cols="12" md="6">
                 <v-checkbox
                   v-model="task.is_multiple"
@@ -61,18 +72,20 @@ export default {
         amount: '',
         is_multiple: false,
         list_id: null,
-        measure_unit_id: null,
-        task_type_id: null
+        measure_unit_name: null,
+        task_type_name: null
       },
     }
   },
   computed: {
     ...mapState('tasks', ['taskTypes']),
     ...mapState('tasks', ['measureUnits']),
+    ...mapState('tasks', ['listNames']),
   },
   methods: {
     ...mapActions('tasks', ['fetchTaskTypes']),
     ...mapActions('tasks', ['fetchMeasureUnits']),
+    ...mapActions('tasks', ['fetchListNames']),
     submit(){
 
     }
@@ -80,6 +93,7 @@ export default {
   created() {
     this.fetchTaskTypes();
     this.fetchMeasureUnits();
+    this.fetchListNames();
   },
 }
 </script>
