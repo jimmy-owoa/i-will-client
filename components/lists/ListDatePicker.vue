@@ -10,7 +10,7 @@
     <template v-slot:activator="{ on }">
       <v-text-field
         v-model="getFormatDate"
-        label="Fecha de término"
+        :label="label_name"
         prepend-icon="mdi-calendar"
         readonly
         v-on="on"
@@ -33,6 +33,9 @@ export default {
       menu: false,
       date: new Date().toISOString().substr(0, 10),
     }
+  },
+  props: {
+    label_name: String
   },
   methods: {
     formatDate(date) {

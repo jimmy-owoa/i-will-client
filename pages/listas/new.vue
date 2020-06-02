@@ -17,11 +17,19 @@
               </v-col>
 
               <v-col cols="12" md="6">
-                <list-date-picker @datePicker="setStartDate" />
+                <list-date-picker @datePicker="setStartDate" label_name="Fecha de inicio" />
               </v-col>
 
               <v-col cols="12" md="6">
-                <list-date-picker @datePicker="setEndDate" />
+                <list-date-picker @datePicker="setEndDate" label_name="Fecha de término" />
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <list-time-picker @timePicker="setTimeStart" label_name="Hora de inicio" />
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <list-time-picker @timePicker="setTimeEnd" label_name="Fecha de término" />
               </v-col>
 
               <v-col cols="12" sm="12">
@@ -39,13 +47,17 @@
 <script>
 import { mapActions } from "vuex";
 import ListDatePicker from '@/components/lists/ListDatePicker';
+import ListTimePicker from '@/components/lists/ListTimePicker';
 
 export default {
   components: {
-    ListDatePicker
+    ListDatePicker,
+    ListTimePicker
   },
   data() {
     return {
+      time_start: '9:00',
+      time_end: '9:00',
       list: {
         name: '',
         code: '',
@@ -59,6 +71,8 @@ export default {
   methods: {
     ...mapActions('lists', ['addList']),
     submit(){
+      this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
+      this.list.end_date = new Date(`${this.list.end_date} ${this.time_end}`);
       this.addList(this.list);
       this.$router.push("/listas");
     },
@@ -67,6 +81,12 @@ export default {
     },
     setEndDate (date) {
       this.list.end_date = date;
+    },
+    setTimeStart (time) {
+      this.time_start = time;
+    },
+    setTimeEnd (time) {
+      this.time_end = time;
     },
   },
 }
