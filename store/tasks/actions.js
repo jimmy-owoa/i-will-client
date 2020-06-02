@@ -24,3 +24,12 @@ export async function fetchListNames({ commit }) {
     commit("tasksError", e.message);
   } finally {}
 }
+
+export async function addTask({ commit }, task) {
+  console.log(task);
+  try {
+    const { data } = await this.$axios.post('tasks', task);
+  } catch (e) {
+    commit("tasksError", e.message);
+  } finally {}
+}

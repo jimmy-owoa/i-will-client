@@ -16,7 +16,7 @@
             <v-row>
               <v-col cols="12" md="6" lg="6">
                 <v-combobox
-                  v-model="task.task_type_id"
+                  v-model="task.task_type_name"
                   :items="taskTypes"
                   label="Tipo de tarea"
                 ></v-combobox>
@@ -86,8 +86,9 @@ export default {
     ...mapActions('tasks', ['fetchTaskTypes']),
     ...mapActions('tasks', ['fetchMeasureUnits']),
     ...mapActions('tasks', ['fetchListNames']),
+    ...mapActions('tasks', ['addTask']),
     submit(){
-
+      this.addTask(this.task);
     }
   },
   created() {
