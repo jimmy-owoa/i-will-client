@@ -19,7 +19,7 @@ export default {
   methods: {
     ...mapActions("lists", ["fetchLists"]),
     goToList(list) {
-      this.$router.push(`listas/${list.id}`);
+      this.$router.push(`listas/${list.slug}`);
     }
   },
   created() {
