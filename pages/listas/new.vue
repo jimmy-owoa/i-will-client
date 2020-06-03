@@ -41,33 +41,18 @@
         </v-card>
       </v-form>
     </v-col>
+    <!-- Tareas -->
     <v-col cols="12" md="6" class="pa-0">
-      <!-- Formulario Agregar Tarea -->
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
           <form-task @addTask="addTask" />
         </v-col>
-        <v-col cols="12">
-          <v-card class="my-1" v-for="(task, index) in list.tasks" :key="index">
-            <v-card-text class="pt-1 pb-0">
-              <p class="title">Nombre: {{ task.name}} </p>
-              <v-row>
-                <v-col cols="6" class="py-0">
-                  <p class="subtitle">Cantidad: {{ task.amount }}</p>
-                  <p class="subtitle">Unidad medida: {{ task.measure_unit_name }}</p>
-
-                </v-col>
-                <v-col cols="6" class="py-0">
-                  <p class="subtitle">Tipo de tarea: {{ task.task_type_name }}</p>
-                  <p class="subtitle">¿Es múltiple?: {{ task.is_multiple }}</p>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+        <v-col cols="12" class="py-0">
+          <task-list :tasks="list.tasks" />
         </v-col>
       </v-row>
-      <!-- ./Formulario Agregar Tarea -->
     </v-col>
+    <!-- ./Tareas -->
   </v-row>
 </template>
 
@@ -76,13 +61,15 @@ import { mapActions, mapState } from "vuex";
 import ListDatePicker from '@/components/lists/ListDatePicker';
 import ListTimePicker from '@/components/lists/ListTimePicker';
 import FormTask from '@/components/tasks/FormTask';
+import TaskList from '@/components/tasks/TaskList';
 
 
 export default {
   components: {
     ListDatePicker,
     ListTimePicker,
-    FormTask
+    FormTask,
+    TaskList
   },
   data() {
     return {
