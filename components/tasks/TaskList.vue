@@ -13,6 +13,9 @@
             <p class="subtitle">Tipo de tarea: {{ task.task_type_name }}</p>
             <p class="subtitle">¿Es múltiple?: {{ task.is_multiple }}</p>
           </v-col>
+          <v-col cols="12">
+            <v-btn color="error" outlined @click="deleteTask(index)"><v-icon color="error">mdi-close-thick</v-icon>Eliminar</v-btn>
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -22,6 +25,11 @@
 export default {
   props: {
     tasks: Array
-  }
+  },
+  methods: {
+    deleteTask(index){
+      this.$emit('deleteTask', index);
+    }
+  },
 }
 </script>

@@ -48,7 +48,7 @@
           <form-task @addTask="addTask" />
         </v-col>
         <v-col cols="12" class="py-0">
-          <task-list :tasks="list.tasks" />
+          <task-list :tasks="list.tasks" @deleteTask="deleteTask" />
         </v-col>
       </v-row>
     </v-col>
@@ -108,6 +108,9 @@ export default {
     },
     addTask(task){
       this.list.tasks.push(task);
+    },
+    deleteTask(index){
+      this.list.tasks.splice(index, 1);
     }
   }
 }
