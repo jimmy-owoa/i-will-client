@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col cols="12" md="6">
-      <v-card>
-        <v-form @submit.prevent="submit">
+      <v-form @submit.prevent="submit">
+        <v-card>
           <v-container>
             <p class="title">Crear Lista</p>
             <v-row>
@@ -38,14 +38,69 @@
               </v-col>
             </v-row>
           </v-container>
-        </v-form>
-      </v-card>
+        </v-card>
+        <!-- Formulario Agregar Tarea -->
+        <v-row>
+          <v-col cols="12">
+            <v-card>
+              <v-container>
+                <p class="title">Agregar Tarea</p>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    {{ task.name}}
+                    <v-text-field v-model="task.name" label="Nombre" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="task.amount" label="Cantidad" type="number" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6" lg="6">
+                    <v-combobox
+                      v-model="task.task_type_name"
+                      :items="taskTypes"
+                      label="Tipo de tarea"
+                    ></v-combobox>
+                  </v-col>
+
+                  <v-col cols="12" md="6" lg="6">
+                    <v-combobox
+                      v-model="task.measure_unit_name"
+                      :items="measureUnits"
+                      label="Unidad de medida"
+                    ></v-combobox>
+                  </v-col>
+                  <v-col cols="12" md="6" class="d-flex align-center">
+                    <v-btn color="primary" @click="addTask">Agregar Tarea</v-btn>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-checkbox
+                      v-model="task.is_multiple"
+                      label="¿Es múltiple?"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-card class="my-1" v-for="(task, index) in list.tasks" :key="index">
+              <v-card-text>
+                <p class="title">Nombre: {{ task.name}} </p>
+                <p class="subtitle">Cantidad: {{ task.amount }}</p>
+                <p class="subtitle">Unidad medida: {{ task.measure_unit_name }}</p>
+                <p class="subtitle">Tipo de tarea: {{ task.task_type_name }}</p>
+                <p class="subtitle">Es múltiple?: {{ task.is_multiple }}</p>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <!-- ./Formulario Agregar Tarea -->
+      </v-form>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ListDatePicker from '@/components/lists/ListDatePicker';
 import ListTimePicker from '@/components/lists/ListTimePicker';
 
@@ -64,11 +119,21 @@ export default {
         description: '',
         start_date: new Date().toISOString().substr(0, 10),
         end_date: new Date().toISOString().substr(0, 10),
-        user_id: 1
-      }
+        user_id: 1,
+        tasks: []
+      },
+      task: {
+        name: '',
+        amount: '',
+        is_multiple: false,
+        measure_unit_name: null,
+        task_type_name: null
+      },
     }
   },
   methods: {
+    ...mapActions('tasks', ['fetchTaskTypes']),
+    ...mapActions('tasks', ['fetchMeasureUnits']),
     ...mapActions('lists', ['addList']),
     submit(){
       this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
@@ -88,6 +153,29 @@ export default {
     setTimeEnd (time) {
       this.time_end = time;
     },
+    addTask(){
+      this.list.tasks.push({
+        name: this.task.name,
+        amount: this.task.amount,
+        is_multiple: this.task.is_multiple,
+        measure_unit_name: this.task.measure_unit_name,
+        task_type_name: this.task.task_type_name
+      });
+
+      this.task.name = '';
+      this.task.amount = '';
+      this.task.is_multiple = false;
+      this.task.measure_unit_name = null;
+      this.task.task_type_name = null;
+    }
+  },
+  computed: {
+    ...mapState('tasks', ['taskTypes']),
+    ...mapState('tasks', ['measureUnits']),
+  },
+  created() {
+    this.fetchTaskTypes();
+    this.fetchMeasureUnits();
   },
 }
 </script>
