@@ -27,7 +27,7 @@
               ></v-combobox>
             </v-col>
             <v-col cols="12" md="6" class="d-flex align-center pb-0">
-              <v-btn color="primary" @click="addTask">Agregar Tarea</v-btn>
+              <v-btn color="primary" @click="addTask">Agregar</v-btn>
             </v-col>
             <v-col cols="12" md="6" class="pb-0">
               <v-checkbox
