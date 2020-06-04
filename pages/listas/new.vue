@@ -43,45 +43,11 @@
     </v-col>
     <!-- Tareas -->
     <v-col cols="12" md="6" class="pa-0">
-      <v-card class="mb-1" v-for="(task, index) in list.tasks" :key="index">
-        <v-container>
-          <p class="title">Tarea {{ index + 1 }}</p>
-          <v-row>
-            <v-col cols="12" md="6" class="py-0">
-              <v-text-field v-model="task.name" label="Nombre" outlined></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6" class="py-0">
-              <v-text-field v-model="task.amount" label="Cantidad" type="number" outlined></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6" class="py-0">
-              <v-combobox
-                v-model="task.task_type_name"
-                :items="taskTypes"
-                label="Tipo de tarea"
-              ></v-combobox>
-            </v-col>
-
-            <v-col cols="12" md="6" class="py-0">
-              <v-combobox
-                v-model="task.measure_unit_name"
-                :items="measureUnits"
-                label="Unidad de medida"
-              ></v-combobox>
-            </v-col>
-            <v-col cols="6" class="pb-0">
-              <v-checkbox
-                v-model="task.is_multiple"
-                label="¿Es múltiple?"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="6" class="d-flex align-end">
-              <v-btn class="text-right" color="error" @click="deleteTask(index)"><v-icon>mdi-close</v-icon>Eliminar Tarea</v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
+      <form-task :tasks="list.tasks" @deleteTask="deleteTask" />
       <div class="text-center">
-        <v-btn class="text-right" color="primary" @click="addTask"><v-icon>mdi-plus</v-icon>Agregar Tarea</v-btn>
+        <v-btn class="text-right" color="primary" @click="addTask">
+          <v-icon>mdi-plus</v-icon>Agregar Tarea
+        </v-btn>
       </div>
     </v-col>
     <!-- ./Tareas -->
@@ -89,19 +55,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import ListDatePicker from '@/components/lists/ListDatePicker';
 import ListTimePicker from '@/components/lists/ListTimePicker';
 import FormTask from '@/components/tasks/FormTask';
-import TaskList from '@/components/tasks/TaskList';
-
 
 export default {
   components: {
     ListDatePicker,
     ListTimePicker,
     FormTask,
-    TaskList
   },
   data() {
     return {
@@ -119,8 +82,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('tasks', ['fetchTaskTypes']),
-    ...mapActions('tasks', ['fetchMeasureUnits']),
     ...mapActions('lists', ['addList']),
     submit(){
       this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
@@ -152,14 +113,6 @@ export default {
     deleteTask(index){
       this.list.tasks.splice(index, 1);
     }
-  },
-  computed: {
-    ...mapState('tasks', ['taskTypes']),
-    ...mapState('tasks', ['measureUnits']),
-  },
-  created() {
-    this.fetchTaskTypes();
-    this.fetchMeasureUnits();
   },
 }
 </script>

@@ -27,6 +27,9 @@
           </v-row>
         </v-card-text>
       </v-card>
+      <v-btn class="mt-1" color="info" to="/listas">
+        <v-icon>mdi-backburger</v-icon>Volver a Listas
+      </v-btn>
     </v-col>
     <v-col cols="12" md="6">
       <v-card>

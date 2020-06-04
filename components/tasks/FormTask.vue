@@ -1,9 +1,9 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card>
+      <v-card class="mb-1" v-for="(task, index) in tasks" :key="index">
         <v-container>
-          <p class="title">Agregar Tarea</p>
+          <p class="title">Tarea {{ index + 1 }}</p>
           <v-row>
             <v-col cols="12" md="6" class="py-0">
               <v-text-field v-model="task.name" label="Nombre" outlined></v-text-field>
@@ -26,14 +26,16 @@
                 label="Unidad de medida"
               ></v-combobox>
             </v-col>
-            <v-col cols="12" md="6" class="d-flex align-center pb-0">
-              <v-btn color="primary" @click="addTask">Agregar</v-btn>
-            </v-col>
-            <v-col cols="12" md="6" class="pb-0">
+            <v-col cols="6" class="pb-0">
               <v-checkbox
                 v-model="task.is_multiple"
                 label="¿Es múltiple?"
               ></v-checkbox>
+            </v-col>
+            <v-col cols="6" class="d-flex align-end">
+              <v-btn class="text-right" color="error" @click="$emit('deleteTask', index)">
+                <v-icon>mdi-close</v-icon>Eliminar Tarea
+              </v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -45,37 +47,12 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      task: {
-        name: '',
-        amount: '',
-        is_multiple: false,
-        measure_unit_name: null,
-        task_type_name: null
-      },
-    }
+  props: {
+    tasks: Array
   },
   methods: {
     ...mapActions('tasks', ['fetchTaskTypes']),
     ...mapActions('tasks', ['fetchMeasureUnits']),
-    addTask(){
-      let task = {
-        name: this.task.name,
-        amount: this.task.amount,
-        is_multiple: this.task.is_multiple,
-        measure_unit_name: this.task.measure_unit_name,
-        task_type_name: this.task.task_type_name
-      }
-
-      this.$emit('addTask', task)
-
-      this.task.name = '';
-      this.task.amount = '';
-      this.task.is_multiple = false;
-      this.task.measure_unit_name = null;
-      this.task.task_type_name = null;
-    }
   },
   computed: {
     ...mapState('tasks', ['taskTypes']),
