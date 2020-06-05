@@ -30,6 +30,9 @@
       <v-btn class="mt-1" color="info" to="/listas">
         <v-icon>mdi-backburger</v-icon>Volver a Listas
       </v-btn>
+      <v-btn class="mt-1" color="warning" :to="`/listas/${this.$route.params.slug}/editar`">
+        <v-icon>mdi-draw</v-icon>Editar
+      </v-btn>
     </v-col>
     <v-col cols="12" md="6">
       <v-card>
@@ -41,8 +44,8 @@
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-html="task.name"></v-list-item-title>
-                <v-list-item-subtitle>Cantidad: {{ task.amount }} {{ task.measure_unit }}</v-list-item-subtitle>
-                <v-list-item-subtitle>Tipo de tarea: {{ task.task_type }}</v-list-item-subtitle>
+                <v-list-item-subtitle>Cantidad: {{ task.amount }} {{ task.measure_unit_name }}</v-list-item-subtitle>
+                <v-list-item-subtitle>Tipo de tarea: {{ task.task_type_name }}</v-list-item-subtitle>
                 <v-list-item-subtitle>Tarea múltiple: {{ task.is_multiple ? 'Sí' : 'No' }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>

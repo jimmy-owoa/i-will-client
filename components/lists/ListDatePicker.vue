@@ -31,11 +31,12 @@ export default {
   data() {
     return {
       menu: false,
-      date: new Date().toISOString().substr(0, 10),
+      date: this.selected_date ? new Date(this.selected_date).toISOString().substr(0, 10) : new Date().toISOString().substr(0, 10),
     }
   },
   props: {
-    label_name: String
+    label_name: String,
+    selected_date: String
   },
   methods: {
     formatDate(date) {
