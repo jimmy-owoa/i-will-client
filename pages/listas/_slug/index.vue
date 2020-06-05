@@ -47,6 +47,11 @@
                 <v-list-item-subtitle>Cantidad: {{ task.amount }} {{ task.measure_unit_name }}</v-list-item-subtitle>
                 <v-list-item-subtitle>Tipo de tarea: {{ task.task_type_name }}</v-list-item-subtitle>
                 <v-list-item-subtitle>Tarea múltiple: {{ task.is_multiple ? 'Sí' : 'No' }}</v-list-item-subtitle>
+                <v-checkbox
+                  v-model="task.check"
+                  label="Seleccionar tarea"
+                  @change="addTaskToUser(task)"
+                ></v-checkbox>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -62,11 +67,29 @@
 import { mapState, mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      checkTask: this.checkTask
+    }
+  },
   methods: {
     ...mapActions('lists', ['fetchList']),
+    ...mapActions('tasks', ['addTaskUser']),
+    addTaskToUser(task){
+      this.addTaskUser({ task_id: task.id, value: this.checkTask });
+    }
   },
   computed: {
     ...mapState('lists', ['selectedList']),
+    ...mapState('users', ['currentUser']),
+    ...mapState('tasks', ['checkTask']),
+    getUserTask(task){
+      if (task.user_ids.includes(this.currentUser.id)){
+        return true
+      } else {
+        return false
+      }
+    }
   },
   created() {
     this.fetchList(this.$route.params.slug)

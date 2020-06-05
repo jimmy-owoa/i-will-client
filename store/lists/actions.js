@@ -25,10 +25,10 @@ export async function addList({ commit }, list) {
   } finally {}
 }
 
-export async function updateList({ commit }, slug, list) {
+export async function updateList({ commit }, list) {
   console.log(list)
   try {
-    const { data } = await this.$axios.put(`lists/${slug}`, list);
+    const { data } = await this.$axios.put(`lists/${list.slug}`, list.data);
   } catch (e) {
     commit("listsError", e.message);
   } finally {}

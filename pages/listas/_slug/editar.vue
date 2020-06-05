@@ -18,7 +18,7 @@ export default {
   computed: {
     ...mapGetters('lists',  ['getList']),
   },
-  mounted() {
+  created() {
     this.fetchList(this.$route.params.slug);
   },
 }

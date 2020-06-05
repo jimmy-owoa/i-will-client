@@ -1,6 +1,5 @@
 export default () => ({
-  lists: [],
-  selectedList: "",
+  currentUser: null,
   error: false,
   errorMessage: ''
 })
