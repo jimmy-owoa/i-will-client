@@ -50,7 +50,7 @@
                 <v-checkbox
                   v-model="task.check"
                   label="Seleccionar tarea"
-                  @change="addTaskToUser(task)"
+                  @click="addTaskToUser(task)"
                 ></v-checkbox>
               </v-list-item-content>
             </v-list-item>
@@ -69,20 +69,19 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      checkTask: this.checkTask
     }
   },
   methods: {
     ...mapActions('lists', ['fetchList']),
     ...mapActions('tasks', ['addTaskUser']),
     addTaskToUser(task){
-      this.addTaskUser({ task_id: task.id, value: this.checkTask });
+      this.addTaskUser({ task_id: task.id, value: task.check });
+      this.fetchList(this.$route.params.slug);
     }
   },
   computed: {
     ...mapState('lists', ['selectedList']),
     ...mapState('users', ['currentUser']),
-    ...mapState('tasks', ['checkTask']),
     getUserTask(task){
       if (task.user_ids.includes(this.currentUser.id)){
         return true
