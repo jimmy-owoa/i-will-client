@@ -1,43 +1,32 @@
-<template lang="html">
-  <div>
-    <vs-table stripe :data="lists">
-      <template slot="header">
-        <h3>
-          Listas
-        </h3>
-      </template>
-      <template slot="thead">
-  <vs-th>Id</vs-th>
-  <vs-th>Nombre</vs-th>
-  <vs-th>Acciones</vs-th>
-</template>
-
-      <template slot-scope="{ data }">
-  <vs-tr :key="indextr" v-for="(list, indextr) in lists">
-    <vs-td :data="list.id">{{ list.id }}</vs-td>
-
-    <vs-td :data="list.name">{{ list.name }}</vs-td>
-    <vs-td>
-      <vs-button @click="goToList(list.id)" color="primary" type="filled">Ver</vs-button>
-    </vs-td>
-  </vs-tr>
-</template>
-    </vs-table>
-  </div>
+<template>
+  <v-row v-if="getLists">
+    <v-col cols="12" md="12" v-for="e in getLists" :key="e.id">
+      <v-card @click="goToList(e)">
+        <v-card-title>{{e.name}}</v-card-title>
+        <v-card-subtitle>Inicia: {{e.start_date}} | Termina: {{e.end_date}}</v-card-subtitle>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
-  props: {
-    lists: {
-      type: Array,
-      required: true
-    }
+  computed: {
+    ...mapGetters("lists", ["getLists"])
   },
   methods: {
-    goToList(id) {
-      this.$router.push(`/listas/${id}`);
+    ...mapActions("lists", ["fetchLists"]),
+    goToList(list) {
+      this.$router.push(`listas/${list.slug}`);
     }
+  },
+  created() {
+    this.fetchLists();
   }
 };
 </script>
+
+<style>
+</style>
