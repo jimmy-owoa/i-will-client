@@ -4,7 +4,7 @@
       <v-form @submit.prevent="submit">
         <v-card>
           <v-container>
-            <p class="title">Crear Lista</p>
+            <p class="title">Editar Lista</p>
             <v-row>
               <v-col cols="12" md="6" class="py-0">
                 <v-text-field v-model="list.name" label="Nombre" outlined></v-text-field>
@@ -33,7 +33,7 @@
               </v-col>
 
               <v-col cols="12">
-                <v-btn color="primary" type="submit">Crear</v-btn>
+                <v-btn color="primary" type="submit">Editar</v-btn>
                 <v-btn color="red" dark to="/listas">Cancelar</v-btn>
               </v-col>
             </v-row>

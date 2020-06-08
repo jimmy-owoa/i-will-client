@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>Editar</h3>
     <list-form :selectedList="getList" v-if="getList" action="put"/>
   </div>
 </template>
