@@ -48,6 +48,7 @@
                 <v-list-item-subtitle>Tipo de tarea: {{ task.task_type_name }}</v-list-item-subtitle>
                 <v-list-item-subtitle>Tarea múltiple: {{ task.is_multiple ? 'Sí' : 'No' }}</v-list-item-subtitle>
                 <v-checkbox
+                  :disabled="task.selection_disabled"
                   v-model="task.selected_task"
                   label="Seleccionar tarea"
                   @click="addTaskToUser(task)"
