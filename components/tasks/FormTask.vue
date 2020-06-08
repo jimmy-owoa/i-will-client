@@ -27,10 +27,25 @@
               ></v-combobox>
             </v-col>
             <v-col cols="6" class="pb-0">
-              <v-checkbox
-                v-model="task.is_multiple"
-                label="¿Es múltiple?"
-              ></v-checkbox>
+              <v-row>
+                <v-col cols="6" class="pr-0">
+                  <v-checkbox
+                    v-model="task.is_multiple"
+                    label="¿Es múltiple?"
+                    :disabled="!task.task_editable"
+                  ></v-checkbox>
+                </v-col>
+                <v-col cols="6" class="d-flex align-center pl-0">     
+                  <v-tooltip top v-if="!task.task_editable">
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon v-on="on">
+                        <v-icon color="">mdi-help-box</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Este campo no se puede editar porque ya tiene usuarios asignados.</span>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
             </v-col>
             <v-col cols="6" class="d-flex align-end">
               <v-btn class="text-right" color="error" @click="$emit('deleteTask', index)">

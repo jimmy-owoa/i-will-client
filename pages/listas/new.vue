@@ -108,6 +108,7 @@ export default {
         is_multiple: false,
         measure_unit_name: null,
         task_type_name: null,
+        task_editable: true
       });
     },
     deleteTask(index){
