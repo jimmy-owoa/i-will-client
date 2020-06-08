@@ -17,19 +17,19 @@
               </v-col>
 
               <v-col cols="12" md="6" class="py-0">
-                <list-date-picker @datePicker="setStartDate" :selected_date="list.full_start_date" label_name="Fecha de inicio" />
+                <list-date-picker @datePicker="setStartDate" :selected_date="start_date" label_name="Fecha de inicio" />
               </v-col>
 
               <v-col cols="12" md="6" class="py-0">
-                <list-date-picker @datePicker="setEndDate"  :selected_date="list.full_end_date" label_name="Fecha de término" />
+                <list-date-picker @datePicker="setEndDate"  :selected_date="end_date" label_name="Fecha de término" />
               </v-col>
 
               <v-col cols="12" md="6" class="py-0">
-                <list-time-picker @timePicker="setTimeStart" :selected_time="list.start_time" label_name="Hora de inicio" />
+                <list-time-picker @timePicker="setTimeStart" :selected_time="start_time" label_name="Hora de inicio" />
               </v-col>
 
               <v-col cols="12" md="6" class="py-0">
-                <list-time-picker @timePicker="setTimeEnd" :selected_time="list.end_time" label_name="Hora de término" />
+                <list-time-picker @timePicker="setTimeEnd" :selected_time="end_time" label_name="Hora de término" />
               </v-col>
 
               <v-col cols="12">
@@ -40,7 +40,6 @@
           </v-container>
         </v-card>
       </v-form>
-        {{ list.tasks }}
     </v-col>
     <!-- Tareas -->
     <v-col cols="12" md="6" class="pa-0">
@@ -78,12 +77,14 @@ export default {
         name: this.selectedList.name,
         code: this.selectedList.code,
         description: this.selectedList.description,
-        start_date: this.selectedList.start_date,
-        end_date: this.selectedList.end_date,
-        start_time: this.selectedList.start_time,
-        end_time: this.selectedList.end_time,
+        start_date: this.selectedList.full_start_date,
+        end_date: this.selectedList.full_end_date,
         tasks: this.selectedList.tasks
       },
+      start_date: new Date(this.selectedList.full_start_date).toISOString().substr(0, 10),
+      end_date: new Date(this.selectedList.full_end_date).toISOString().substr(0, 10),
+      start_time: this.selectedList.start_time,
+      end_time: this.selectedList.end_time,
     }
   },
   methods: {
@@ -96,23 +97,25 @@ export default {
         this.addList(this.selectedList);
         this.$router.push("/listas");
       } else {
-        this.list.start_date = new Date(`${this.list.start_date} ${this.list.start_time}`);
-        this.list.end_date = new Date(`${this.list.end_date} ${this.list.end_time}`);
+        this.list.start_date = new Date(`${this.start_date} ${this.start_time}`);
+        this.list.end_date = new Date(`${this.end_date} ${this.end_time}`);
+        console.log(this.list.start_date);
+        console.log(this.list.end_date);
         this.updateList({ slug: this.$route.params.slug, data: this.list });
         this.$router.push("/listas");
       }
     },
     setStartDate (date) {
-      this.list.start_date = date;
+      this.start_date = date;
     },
     setEndDate (date) {
-      this.list.end_date = date;
+      this.end_date = date;
     },
     setTimeStart (time) {
-      this.list.start_time = time;
+      this.start_time = time;
     },
     setTimeEnd (time) {
-      this.list.end_time = time;
+      this.end_time = time;
     },
     addTask(){
       this.list.tasks.push({

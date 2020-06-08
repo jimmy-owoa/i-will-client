@@ -48,7 +48,7 @@
                 <v-list-item-subtitle>Tipo de tarea: {{ task.task_type_name }}</v-list-item-subtitle>
                 <v-list-item-subtitle>Tarea múltiple: {{ task.is_multiple ? 'Sí' : 'No' }}</v-list-item-subtitle>
                 <v-checkbox
-                  v-model="task.check"
+                  v-model="task.selected_task"
                   label="Seleccionar tarea"
                   @click="addTaskToUser(task)"
                 ></v-checkbox>
@@ -65,30 +65,55 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import Swal from "sweetalert2";
 
 export default {
   data() {
     return {
+      swal_title: ''
     }
   },
   methods: {
     ...mapActions('lists', ['fetchList']),
     ...mapActions('tasks', ['addTaskUser']),
     addTaskToUser(task){
-      this.addTaskUser({ task_id: task.id, value: task.check });
-      this.fetchList(this.$route.params.slug);
-    }
+      if (task.selected_task) {
+        this.swal_title = "¿Estás seguro de quitar esta tarea?";
+      } else {
+        this.swal_title = "¿Estás seguro de seleccionar esta Tarea?";
+      }
+      Swal.fire({
+        title: this.swal_title,
+        width: 600,
+
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: "Confirmar",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        try {
+          this.$axios
+            .post(`http://localhost:3000/api/v1/add_task_user`, { task_id: task.id, value: task.selected_task })
+            .then(res => {
+              if (res.status == 200) {
+                this.fetchList(this.$route.params.slug);
+              } else {
+                console.log('Algo paso D:')
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        } catch (error) {
+          console.log(error);
+          return { error: error };
+        }
+      });
+    },
+
   },
   computed: {
     ...mapState('lists', ['selectedList']),
-    ...mapState('users', ['currentUser']),
-    getUserTask(task){
-      if (task.user_ids.includes(this.currentUser.id)){
-        return true
-      } else {
-        return false
-      }
-    }
   },
   created() {
     this.fetchList(this.$route.params.slug)
