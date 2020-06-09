@@ -1,39 +1,40 @@
 <template>
   <v-row v-if="selectedList">
-    <v-col cols="12" md="6">
+    <!-- Lista -->
+    <v-col cols="12">
       <v-card>
-        <v-card-title>{{ selectedList.name }}</v-card-title>
+        <v-row>
+          <v-col cols="6" class="py-0">
+            <v-card-title>{{ selectedList.name }}</v-card-title>
+          </v-col>
+          <v-col cols="6" class="py-0">
+            <v-row>
+              <v-col cols="6" class="text-right">
+                Inicio: <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_date}}</v-chip>
+                <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_time}} hrs.</v-chip>
+              </v-col>
+              <v-col cols="6" class="text-center">
+                Término: <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_date}}</v-chip>
+                <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_time}} hrs.</v-chip>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
         <v-card-text>
           <div class="subtitle-1 my-2">Código: {{ selectedList.code }}</div>
           <div class="subtitle-2">{{ selectedList.description }}</div>
           <v-divider class="mx-4 my-4"></v-divider>
-          <v-row>
-            <v-col cols="12" sm="2">
-              <div class="subtitle-1 font-weight-bold">Inicio</div>
-            </v-col>
-            <v-col cols="12" sm="10">
-              <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_date}}</v-chip>
-              <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_time}}</v-chip>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="2">
-              <div class="subtitle-1 font-weight-bold">Término</div>
-            </v-col>
-            <v-col cols="12" sm="10">
-              <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_date}}</v-chip>
-              <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_time}}</v-chip>
-            </v-col>
-          </v-row>
+          <v-btn class="mt-1" color="info" to="/listas">
+            <v-icon>mdi-backburger</v-icon>Volver a Listas
+          </v-btn>
+          <v-btn class="mt-1" color="warning" :to="`/listas/${this.$route.params.slug}/editar`">
+            <v-icon>mdi-draw</v-icon>Editar
+          </v-btn>
         </v-card-text>
       </v-card>
-      <v-btn class="mt-1" color="info" to="/listas">
-        <v-icon>mdi-backburger</v-icon>Volver a Listas
-      </v-btn>
-      <v-btn class="mt-1" color="warning" :to="`/listas/${this.$route.params.slug}/editar`">
-        <v-icon>mdi-draw</v-icon>Editar
-      </v-btn>
     </v-col>
+    <!-- ./Lista -->
+    <!-- Tareas -->
     <v-col cols="12" md="6">
       <v-card>
         <v-list three-line v-if="selectedList.tasks.length">
@@ -61,6 +62,7 @@
         <div class="title text-center" v-else>Lista sin tareas...</div>
       </v-card>
     </v-col>
+    <!-- ./Tareas -->
   </v-row>
 </template>
 
@@ -121,7 +123,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
