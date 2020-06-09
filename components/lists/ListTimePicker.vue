@@ -33,12 +33,13 @@
   export default {
     data () {
       return {
-        time: null,
+        time: this.selected_time ? this.selected_time : null,
         menu2: false,
       }
     },
     props: {
-      label_name: String
+      label_name: String,
+      selected_time: String
     }
   }
 </script>

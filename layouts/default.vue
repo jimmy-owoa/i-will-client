@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+
 export default {
   name: 'Default',
   data () {
@@ -113,6 +115,12 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-  }
+  },
+  methods: {
+    ...mapActions('users', ['fetchCurrentUser'])
+  },
+  created() {
+    this.fetchCurrentUser();
+  },
 }
 </script>

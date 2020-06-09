@@ -24,3 +24,12 @@ export async function addList({ commit }, list) {
     commit("listsError", e.message);
   } finally {}
 }
+
+export async function updateList({ commit }, list) {
+  console.log(list)
+  try {
+    const { data } = await this.$axios.put(`lists/${list.slug}`, list.data);
+  } catch (e) {
+    commit("listsError", e.message);
+  } finally {}
+}

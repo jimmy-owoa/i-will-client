@@ -1,5 +1,5 @@
 export default () => ({
   taskTypes: [],
   measureUnits: [],
-  listNames: []
+  listNames: [],
 })

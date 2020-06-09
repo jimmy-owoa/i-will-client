@@ -33,3 +33,12 @@ export async function addTask({ commit }, task) {
     commit("tasksError", e.message);
   } finally {}
 }
+
+export async function addTaskUser({ commit }, task) {
+  console.log(task);
+  try {
+    const { data } = await this.$axios.post('add_task_user', task);
+  } catch (e) {
+    commit("tasksError", e.message);
+  } finally {}
+}
