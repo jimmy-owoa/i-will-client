@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn color="success">Hola</v-btn>
+    <v-btn color="success" to="/listas/new">Crear Lista</v-btn>
     <lists />
   </div>
 </template>

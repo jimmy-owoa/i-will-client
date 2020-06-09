@@ -1,5 +1,6 @@
 export default () => ({
-  events: [],
+  lists: [],
+  selectedList: null,
   error: false,
   errorMessage: ''
 })

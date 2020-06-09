@@ -30,7 +30,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    "~/plugins/axios"
+    "~/plugins/axios",
+    "~/plugins/vuelidate"
   ],
   /*
   ** Nuxt.js dev-modules
