@@ -7,10 +7,26 @@
             <p class="title">Editar Lista</p>
             <v-row>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field v-model="list.name" label="Nombre" outlined></v-text-field>
+                <v-text-field 
+                  v-model="list.name" 
+                  label="Nombre"
+                  outlined
+                  required
+                  @input="$v.list.name.$touch()"
+                  @blur="$v.list.name.$touch()"
+                  :error-messages="nameErrors"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field v-model="list.code" label="Código" outlined></v-text-field>
+                <v-text-field 
+                  v-model="list.code"
+                  label="Código"
+                  outlined
+                  required
+                  @input="$v.list.code.$touch()"
+                  @blur="$v.list.code.$touch()"
+                  :error-messages="codeErrors"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="12" class="py-0">
                 <v-textarea counter label="Descripción" v-model="list.description"></v-textarea>
@@ -55,8 +71,9 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength } from 'vuelidate/lib/validators'
 import { mapActions } from "vuex";
-
 import ListDatePicker from '@/components/lists/ListDatePicker';
 import ListTimePicker from '@/components/lists/ListTimePicker';
 import FormTask from '@/components/tasks/FormTask';
@@ -91,12 +108,9 @@ export default {
     ...mapActions('lists', ['addList']),
     ...mapActions('lists', ['updateList']),
     submit(){
-      if (this.action == 'post') {        
-        this.selectedList.start_date = new Date(`${this.selectedList.start_date} ${this.selectedList.start_time}`);
-        this.selectedList.end_date = new Date(`${this.selectedList.end_date} ${this.selectedList.end_time}`);
-        this.addList(this.selectedList);
-        this.$router.push("/listas");
-      } else {
+      this.$v.$touch();
+
+      if (!this.$v.$error) {        
         this.list.start_date = new Date(`${this.start_date} ${this.start_time}`);
         this.list.end_date = new Date(`${this.end_date} ${this.end_time}`);
         console.log(this.list.start_date);
@@ -128,6 +142,29 @@ export default {
     },
     deleteTask(index){
       this.list.tasks.splice(index, 1);
+    }
+  },
+  computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.list.name.$dirty) return errors
+      !this.$v.list.name.minLength && errors.push('El nombre debe tener un mínimo de 3 caracteres')
+      !this.$v.list.name.required && errors.push('El nombre es requerido')
+      return errors
+    },
+    codeErrors () {
+      const errors = []
+      if (!this.$v.list.code.$dirty) return errors
+      !this.$v.list.code.minLength && errors.push('El código debe tener un mínimo de 3 caracteres')
+      !this.$v.list.code.required && errors.push('El código es requerido')
+      return errors
+    },
+  },
+  mixins: [validationMixin],
+  validations: {
+    list: {
+      name: { required, minLength: minLength(3) },
+      code: { required, minLength: minLength(3) },
     }
   },
 }

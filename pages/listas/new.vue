@@ -1,16 +1,32 @@
 <template>
   <v-row>
     <v-col cols="12" md="6">
-      <v-form @submit.prevent="submit">
+      <v-form @submit.prevent="submit()">
         <v-card>
           <v-container>
             <p class="title">Crear Lista</p>
             <v-row>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field v-model="list.name" label="Nombre" outlined></v-text-field>
+                <v-text-field 
+                  v-model="list.name"
+                  label="Nombre" 
+                  outlined
+                  required
+                  @input="$v.list.name.$touch()"
+                  @blur="$v.list.name.$touch()"
+                  :error-messages="nameErrors"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field v-model="list.code" label="Código" outlined></v-text-field>
+                <v-text-field 
+                  v-model="list.code"
+                  label="Código"
+                  outlined
+                  required
+                  @input="$v.list.code.$touch()"
+                  @blur="$v.list.code.$touch()"
+                  :error-messages="codeErrors"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="12" class="py-0">
                 <v-textarea counter label="Descripción" v-model="list.description"></v-textarea>
@@ -33,7 +49,7 @@
               </v-col>
 
               <v-col cols="12">
-                <v-btn color="primary" type="submit">Crear</v-btn>
+                <v-btn color="primary" @click="submit()">Crear</v-btn>
                 <v-btn color="red" dark to="/listas">Cancelar</v-btn>
               </v-col>
             </v-row>
@@ -55,6 +71,8 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 import { mapActions } from "vuex";
 import ListDatePicker from '@/components/lists/ListDatePicker';
 import ListTimePicker from '@/components/lists/ListTimePicker';
@@ -84,10 +102,13 @@ export default {
   methods: {
     ...mapActions('lists', ['addList']),
     submit(){
-      this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
-      this.list.end_date = new Date(`${this.list.end_date} ${this.time_end}`);
-      this.addList(this.list);
-      this.$router.push("/listas");
+      this.$v.$touch();
+      if (!this.$v.$error) {        
+        this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
+        this.list.end_date = new Date(`${this.list.end_date} ${this.time_end}`);
+        this.addList(this.list);
+        this.$router.push("/listas");
+      }
     },
     setStartDate (date) {
       this.list.start_date = date;
@@ -113,6 +134,29 @@ export default {
     },
     deleteTask(index){
       this.list.tasks.splice(index, 1);
+    }
+  },
+  computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.list.name.$dirty) return errors
+      !this.$v.list.name.minLength && errors.push('El nombre debe tener un mínimo de 3 caracteres')
+      !this.$v.list.name.required && errors.push('El nombre es requerido')
+      return errors
+    },
+    codeErrors () {
+      const errors = []
+      if (!this.$v.list.code.$dirty) return errors
+      !this.$v.list.code.minLength && errors.push('El código debe tener un mínimo de 3 caracteres')
+      !this.$v.list.code.required && errors.push('El código es requerido')
+      return errors
+    },
+  },
+  mixins: [validationMixin],
+  validations: {
+    list: {
+      name: { required, minLength: minLength(3) },
+      code: { required, minLength: minLength(3) },
     }
   },
 }
