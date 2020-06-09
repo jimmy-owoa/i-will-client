@@ -1,45 +1,93 @@
 <template>
-  <div>
-    <div id="parentx">
-      <vs-button @click="active = !active" color="primary" type="filled">Open Sidebar</vs-button>
-      <vs-sidebar
-        parent="body"
-        default-index="1"
-        color="primary"
-        class="sidebarx"
-        spacer
-        v-model="active"
+  <v-app dark>
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      fixed
+      app
+    >
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar
+      :clipped-left="clipped"
+      fixed
+      app
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn
+        icon
+        @click.stop="miniVariant = !miniVariant"
       >
-        <div class="header-sidebar" slot="header">
-          <vs-avatar size="70px" src="https://randomuser.me/api/portraits/men/85.jpg" />
-
-          <h4>
-            Jhon Doe
-            <vs-button color="primary" icon="more_horiz" type="flat"></vs-button>
-          </h4>
-        </div>
-
-        <vs-sidebar-item index="1" icon="question_answer">Dashboard</vs-sidebar-item>
-
-        <vs-sidebar-item index="2" icon="gavel">History</vs-sidebar-item>
-
-        <vs-divider icon="person" position="left">User</vs-divider>
-
-        <vs-sidebar-item index="3" icon="verified_user">Configurations</vs-sidebar-item>
-        <vs-sidebar-item index="4" icon="account_box">Profile</vs-sidebar-item>
-        <vs-sidebar-item index="5">Card</vs-sidebar-item>
-
-        <div class="footer-sidebar" slot="footer">
-          <vs-button icon="reply" color="danger" type="flat">log out</vs-button>
-          <vs-button icon="settings" color="primary" type="border"></vs-button>
-        </div>
-      </vs-sidebar>
-    </div>
-    <div class="container">
-      <nuxt />
-    </div>
-  </div>
+        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        @click.stop="clipped = !clipped"
+      >
+        <v-icon>mdi-application</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        @click.stop="fixed = !fixed"
+      >
+        <v-icon>mdi-minus</v-icon>
+      </v-btn>
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-btn
+        icon
+        @click.stop="rightDrawer = !rightDrawer"
+      >
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-content>
+      <v-container>
+        <nuxt />
+      </v-container>
+    </v-content>
+    <v-navigation-drawer
+      v-model="rightDrawer"
+      :right="right"
+      temporary
+      fixed
+    >
+      <v-list>
+        <v-list-item @click.native="right = !right">
+          <v-list-item-action>
+            <v-icon light>
+              mdi-repeat
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-footer
+      :fixed="fixed"
+      app
+    >
+      <span>&copy; {{ new Date().getFullYear() }}</span>
+    </v-footer>
+  </v-app>
 </template>
+
 <script>
 import { mapActions, mapState } from 'vuex';
 
