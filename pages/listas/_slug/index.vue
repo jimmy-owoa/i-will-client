@@ -1,68 +1,53 @@
 <template>
-  <v-row v-if="selectedList">
+  <v-row v-if="selectedList" justify-md="center">
     <!-- Lista -->
-    <v-col cols="12">
-      <v-card>
-        <v-row>
-          <v-col cols="6" class="py-0">
-            <v-card-title>{{ selectedList.name }}</v-card-title>
-          </v-col>
-          <v-col cols="6" class="py-0">
-            <v-row>
-              <v-col cols="6" class="text-right">
-                Inicio: <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_date}}</v-chip>
-                <v-chip class="deep-purple accent-4 white--text">{{ selectedList.start_time}} hrs.</v-chip>
-              </v-col>
-              <v-col cols="6" class="text-center">
-                Término: <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_date}}</v-chip>
-                <v-chip class="deep-purple accent-4 white--text">{{ selectedList.end_time}} hrs.</v-chip>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-card-text>
-          <div class="subtitle-1 my-2">Código: {{ selectedList.code }}</div>
-          <div class="subtitle-2">{{ selectedList.description }}</div>
-          <v-divider class="mx-4 my-4"></v-divider>
-          <v-btn class="mt-1" color="info" to="/listas">
-            <v-icon>mdi-backburger</v-icon>Volver a Listas
-          </v-btn>
-          <v-btn class="mt-1" color="warning" :to="`/listas/${this.$route.params.slug}/editar`">
-            <v-icon>mdi-draw</v-icon>Editar
-          </v-btn>
-        </v-card-text>
-      </v-card>
-    </v-col>
-    <!-- ./Lista -->
-    <!-- Tareas -->
     <v-col cols="12" md="6">
-      <v-card>
-        <v-list three-line v-if="selectedList.tasks.length">
-          <div v-for="(task, index) in selectedList.tasks" :key="index">
-            <v-list-item :key="task.name">
-              <v-list-item-avatar>
-                <v-icon x-large>mdi-clipboard-text-outline</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-html="task.name"></v-list-item-title>
-                <v-list-item-subtitle>Cantidad: {{ task.amount }} {{ task.measure_unit_name }}</v-list-item-subtitle>
-                <v-list-item-subtitle>Tipo de tarea: {{ task.task_type_name }}</v-list-item-subtitle>
-                <v-list-item-subtitle>Tarea múltiple: {{ task.is_multiple ? 'Sí' : 'No' }}</v-list-item-subtitle>
+      <v-card color="blue darken-4">
+        <v-card-title class="white--text">{{ selectedList.name }}</v-card-title>
+        <v-card-subtitle
+          class="white--text"
+        >Finaliza: {{ selectedList.end_date}} a las {{ selectedList.end_time}} hrs.</v-card-subtitle>
+        <v-card-text class="white--text">{{ selectedList.description }}</v-card-text>
+      </v-card>
+      <!-- Tareas -->
+      <v-card v-if="selectedList.tasks.length" class="pt-5">
+        <div class="text-center headline primary--text">Tareas disponibles</div>
+        <v-list flat rounded>
+          <v-list-item-group color="primary">
+            <v-list-item
+              v-for="(task, index) in selectedList.tasks"
+              :key="index"
+              @click="addTaskToUser(task)"
+              :disabled="task.selected_task"
+            >
+              <v-list-item-action>
                 <v-checkbox
                   :disabled="task.selection_disabled"
                   v-model="task.selected_task"
-                  label="Seleccionar tarea"
                   @click="addTaskToUser(task)"
                 ></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{ task.task_type_name + ' ' + task.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{task.amount + ' ' + task.measure_unit_name}}</v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  <div v-for="(user, idx) in task.users" :key="idx">{{ user }}</div>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-divider></v-divider>
-          </div>
+          </v-list-item-group>
         </v-list>
-        <div class="title text-center" v-else>Lista sin tareas...</div>
       </v-card>
+      <div class="title text-center" v-else>Lista sin tareas...</div>
+      <!-- ./Tareas -->
+      <!-- ./Lista -->
+      <v-btn class="mt-1" color="info" to="/listas">
+        <v-icon>mdi-backburger</v-icon>Volver a Listas
+      </v-btn>
+      <v-btn class="mt-1" color="warning" :to="`/listas/${this.$route.params.slug}/editar`">
+        <v-icon>mdi-draw</v-icon>Editar
+      </v-btn>
     </v-col>
-    <!-- ./Tareas -->
   </v-row>
 </template>
 
@@ -73,53 +58,51 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      swal_title: ''
-    }
+      swal_title: ""
+    };
   },
   methods: {
-    ...mapActions('lists', ['fetchList']),
-    ...mapActions('tasks', ['addTaskUser']),
-    addTaskToUser(task){
-      if (task.selected_task) {
-        this.swal_title = "¿Estás seguro de quitar esta tarea?";
-      } else {
-        this.swal_title = "¿Estás seguro de seleccionar esta Tarea?";
+    ...mapActions("lists", ["fetchList"]),
+    ...mapActions("tasks", ["addTaskUser"]),
+    addTaskToUser(task) {
+      if (task.selected_task){
+        Swal.fire({
+          title: "No es posible deshacer esta acción"
+        })
       }
+      this.swal_title = (task.selected_task) ? "¿Estás seguro de quitar esta tarea?" : "¿Estás seguro de seleccionar esta tarea?";
       Swal.fire({
         title: this.swal_title,
         width: 600,
-
         focusConfirm: false,
         showCancelButton: true,
         confirmButtonText: "Confirmar",
         cancelButtonText: "Cancelar"
       }).then(result => {
-        try {
-          this.$axios
-            .post(`http://localhost:3000/api/v1/add_task_user`, { task_id: task.id, value: task.selected_task })
-            .then(res => {
-              if (res.status == 200) {
-                this.fetchList(this.$route.params.slug);
-              } else {
-                console.log('Algo paso D:')
-              }
-            })
-            .catch(e => {
-              console.log(e);
-            });
-        } catch (error) {
-          console.log(error);
-          return { error: error };
+        if (result.value){
+          this.doRequest(task);
         }
       });
     },
-
+    doRequest(task) {
+      try {
+        this.$axios.post(`add_task_user`, {
+          task_id: task.id,
+          value: task.selected_task
+        });        
+      } catch (error) {
+        console.log(error);
+        return { error: error };
+      } finally {
+        setTimeout(() =>  this.fetchList(this.$route.params.slug), 400);
+      }
+    }
   },
   computed: {
-    ...mapState('lists', ['selectedList']),
+    ...mapState("lists", ["selectedList"])
   },
   created() {
-    this.fetchList(this.$route.params.slug)
-  },
-}
+    this.fetchList(this.$route.params.slug);
+  }
+};
 </script>

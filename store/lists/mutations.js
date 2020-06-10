@@ -3,6 +3,7 @@ export function setLists(state, lists) {
 }
 
 export function setList(state, list) {
+  list.tasks.sort((a,b) => a.selected_task - b.selected_task);
   state.selectedList = list;
 }
 
