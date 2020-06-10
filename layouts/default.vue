@@ -48,7 +48,7 @@
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-text="currentUser ? currentUser.email : title" />
       <v-spacer />
       <v-btn
         icon
@@ -116,11 +116,8 @@ export default {
       title: 'Vuetify.js'
     }
   },
-  methods: {
-    ...mapActions('users', ['fetchCurrentUser'])
-  },
-  created() {
-    this.fetchCurrentUser();
-  },
+  computed: {
+    ...mapState('users', ['currentUser']),
+  }
 }
 </script>
