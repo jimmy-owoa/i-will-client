@@ -51,7 +51,7 @@ export default {
   auth: {
     localStorage: false,
     cookie: {
-      prefix: 'auth-token',
+      prefix: 'auth',
       options: {
         path: '/'
       }
@@ -59,16 +59,20 @@ export default {
     redirect: {
       login: '/login'
     },
-    endpoints: {
-      login: { url: 'http://localhost:3000/api/v1/sign_in', method: 'post', propertyName: 'user.auth_token' },
-      logout: { url: 'http://localhost:3000/api/v1/sign_out', method: 'delete' },
-      user: { url: 'http://localhost:3000/api/v1/me', method: 'get', propertyName: 'user' }
-    },
-    // tokenName: 'auth-token'
-    // tokenRequired: true,
-    // tokenType: 'bearer',
-    // globalToken: true,
-    // autoFetchUser: true
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'http://localhost:3000/api/v1/sign_in', method: 'post', propertyName: 'user.auth_token' },
+          logout: { url: 'http://localhost:3000/api/v1/sign_out', method: 'delete' },
+          user: { url: 'http://localhost:3000/api/v1/me', method: 'get', propertyName: 'user' }
+        },
+        tokenName: 'auth-token'
+        // tokenRequired: true,
+        // tokenType: 'bearer',
+        // globalToken: true,
+        // autoFetchUser: true
+      }
+    }
   },
   /*
   ** Axios module configuration
