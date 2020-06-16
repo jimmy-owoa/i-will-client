@@ -7,9 +7,9 @@
             <p class="title">Crear Lista</p>
             <v-row>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field 
+                <v-text-field
                   v-model="list.name"
-                  label="Nombre" 
+                  label="Nombre"
                   outlined
                   required
                   @input="$v.list.name.$touch()"
@@ -18,7 +18,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6" class="py-0">
-                <v-text-field 
+                <v-text-field
                   v-model="list.code"
                   label="Código"
                   outlined
@@ -85,7 +85,7 @@ export default {
     ListTimePicker,
     FormTask,
   },
-  data() {
+ data() {
     return {
       time_start: '00:00',
       time_end: '00:00',
@@ -95,11 +95,11 @@ export default {
         description: '',
         start_date: new Date().toISOString().substr(0, 10),
         end_date: new Date().toISOString().substr(0, 10),
-        user_id: 1,
+        user_id: this.$nuxt.$auth.user.id,
         tasks: []
       },
     }
-  },
+  },,
   methods: {
     ...mapActions('lists', ['addList']),
     submit(){
