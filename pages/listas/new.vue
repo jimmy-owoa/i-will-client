@@ -71,94 +71,98 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength, email } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, minLength, email } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
-import ListDatePicker from '@/components/lists/ListDatePicker';
-import ListTimePicker from '@/components/lists/ListTimePicker';
-import FormTask from '@/components/tasks/FormTask';
+import ListDatePicker from "@/components/lists/ListDatePicker";
+import ListTimePicker from "@/components/lists/ListTimePicker";
+import FormTask from "@/components/tasks/FormTask";
 
 export default {
-  middleware: 'auth',
+  middleware: "auth",
   components: {
     ListDatePicker,
     ListTimePicker,
-    FormTask,
+    FormTask
   },
- data() {
+  data() {
     return {
-      time_start: '00:00',
-      time_end: '00:00',
+      time_start: "00:00",
+      time_end: "00:00",
       list: {
-        name: '',
-        code: '',
-        description: '',
+        name: "",
+        code: "",
+        description: "",
         start_date: new Date().toISOString().substr(0, 10),
         end_date: new Date().toISOString().substr(0, 10),
         user_id: this.$nuxt.$auth.user.id,
         tasks: []
-      },
-    }
-  },,
+      }
+    };
+  },
   methods: {
-    ...mapActions('lists', ['addList']),
-    submit(){
+    ...mapActions("lists", ["addList"]),
+    submit() {
       this.$v.$touch();
-      if (!this.$v.$error) {        
-        this.list.start_date = new Date(`${this.list.start_date} ${this.time_start}`);
+      if (!this.$v.$error) {
+        this.list.start_date = new Date(
+          `${this.list.start_date} ${this.time_start}`
+        );
         this.list.end_date = new Date(`${this.list.end_date} ${this.time_end}`);
         this.addList(this.list);
         this.$router.push("/listas");
       }
     },
-    setStartDate (date) {
+    setStartDate(date) {
       this.list.start_date = date;
     },
-    setEndDate (date) {
+    setEndDate(date) {
       this.list.end_date = date;
     },
-    setStartTime (time) {
+    setStartTime(time) {
       this.time_start = time;
     },
-    setEndTime (time) {
+    setEndTime(time) {
       this.time_end = time;
     },
-    addTask(task){
+    addTask(task) {
       this.list.tasks.push({
-        name: '',
-        amount: '',
+        name: "",
+        amount: "",
         is_multiple: false,
         measure_unit_name: null,
         task_type_name: null,
         task_editable: true
       });
     },
-    deleteTask(index){
+    deleteTask(index) {
       this.list.tasks.splice(index, 1);
     }
   },
   computed: {
-    nameErrors () {
-      const errors = []
-      if (!this.$v.list.name.$dirty) return errors
-      !this.$v.list.name.minLength && errors.push('El nombre debe tener un mínimo de 3 caracteres')
-      !this.$v.list.name.required && errors.push('El nombre es requerido')
-      return errors
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.list.name.$dirty) return errors;
+      !this.$v.list.name.minLength &&
+        errors.push("El nombre debe tener un mínimo de 3 caracteres");
+      !this.$v.list.name.required && errors.push("El nombre es requerido");
+      return errors;
     },
-    codeErrors () {
-      const errors = []
-      if (!this.$v.list.code.$dirty) return errors
-      !this.$v.list.code.minLength && errors.push('El código debe tener un mínimo de 3 caracteres')
-      !this.$v.list.code.required && errors.push('El código es requerido')
-      return errors
-    },
+    codeErrors() {
+      const errors = [];
+      if (!this.$v.list.code.$dirty) return errors;
+      !this.$v.list.code.minLength &&
+        errors.push("El código debe tener un mínimo de 3 caracteres");
+      !this.$v.list.code.required && errors.push("El código es requerido");
+      return errors;
+    }
   },
   mixins: [validationMixin],
   validations: {
     list: {
       name: { required, minLength: minLength(3) },
-      code: { required, minLength: minLength(3) },
+      code: { required, minLength: minLength(3) }
     }
-  },
-}
+  }
+};
 </script>
