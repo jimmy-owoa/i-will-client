@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-btn color="success">Hola</v-btn>
     <lists />
   </div>
 </template>

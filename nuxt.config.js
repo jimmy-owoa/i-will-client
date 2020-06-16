@@ -62,9 +62,9 @@ export default {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'http://localhost:3000/api/v1/sign_in', method: 'post', propertyName: 'user.auth_token' },
-          logout: { url: 'http://localhost:3000/api/v1/sign_out', method: 'delete' },
-          user: { url: 'http://localhost:3000/api/v1/me', method: 'get', propertyName: 'user' }
+          login: { url: 'api/v1/sign_in', method: 'post', propertyName: 'user.auth_token' },
+          logout: { url: 'api/v1/sign_out', method: 'delete' },
+          user: { url: 'api/v1/me', method: 'get', propertyName: 'user' }
         },
         tokenName: 'auth-token'
         // tokenRequired: true,
