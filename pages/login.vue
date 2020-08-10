@@ -58,31 +58,21 @@ export default {
     }
   },
   methods: {
-    async login() {
-      try {
-        const response = await this.$auth.login({
-          data: { legal_number: this.legal_number, password: this.password }
-        })
-        console.log(response)
-        if (response.data.success) {
-          this.$router.push('/listas')
-        }
-      } catch (err) {
-        console.log(err)
-      }
+    login() {
+      this.loginUser(this.legal_number, this.password);
     },
     async signupUser(user) {
       let response = await this.registerUser(user);
 
       if (response.status == "ok") {
         this.alertSuccess = true;
-        this.loginUser(user.email, user.password);
+        this.loginUser(user.legal_number, user.password);
       }
     },
-    async loginUser(email, password) {
+    async loginUser(legal_number, password) {
       try {
         const response = await this.$auth.login({
-          data: { email: email, password: password }
+          data: { legal_number: legal_number, password: password }
         })
         console.log(response)
         if (response.data.success) {
