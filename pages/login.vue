@@ -5,10 +5,10 @@
         <v-card class="elevation-12 mx-auto" max-width="500" height="600">
           <v-tabs background-color="primary" dark v-model="tab" centered>
             <v-tab>
-              Login
+              Iniciar sesión
             </v-tab>
             <v-tab>
-              Sign Up
+              Registrarse
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab">
@@ -23,7 +23,9 @@
             </v-tab-item>
             <v-tab-item>
               <v-card flat>
-                <v-card-text>Contenidow</v-card-text>
+                <signup-form
+                  :submitForm="signupUser"
+                />
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -32,14 +34,17 @@
     </v-row>
   </v-container>
 </template>
+
 <script>
+import { mapActions, mapGetters } from "vuex";
 import LoginForm from '~/components/forms/LoginForm';
+import SignupForm from '~/components/forms/SignupForm';
 
 export default {
   layout: 'session',
 
   components: {
-    LoginForm
+    LoginForm, SignupForm
   },
   data() {
     return {
@@ -65,7 +70,11 @@ export default {
     },
     updateEmail(value) {
       this.email = value;
-    }
+    },
+    signupUser(user) {
+      this.createUser(user);
+    },
+    ...mapActions('users', ['createUser']),
   },
 }
 </script>
