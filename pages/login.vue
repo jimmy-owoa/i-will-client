@@ -12,6 +12,7 @@
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab">
+            <!-- Login -->
             <v-tab-item>
               <v-alert type="error" v-model="alertError" dismissible>
                 R.U.N. o contraseña incorrectos
@@ -22,6 +23,7 @@
                 :submitForm="login"
               />
             </v-tab-item>
+            <!-- Sign Up -->
             <v-tab-item>
               <v-card flat>
                 <v-alert type="success" v-show="alertSuccess">
