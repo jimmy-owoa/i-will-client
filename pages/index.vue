@@ -9,6 +9,7 @@
 import Lists from '~/components/lists/Lists.vue'
 
 export default {
+  layout: 'user',
   middleware: 'auth',
   components: {
     Lists

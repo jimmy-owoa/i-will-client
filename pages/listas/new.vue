@@ -79,6 +79,7 @@ import ListTimePicker from '@/components/lists/ListTimePicker';
 import FormTask from '@/components/tasks/FormTask';
 
 export default {
+  layout: 'user',
   middleware: 'auth',
   components: {
     ListDatePicker,

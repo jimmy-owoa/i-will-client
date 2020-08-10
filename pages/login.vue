@@ -45,7 +45,7 @@ import SignupForm from '~/components/forms/SignupForm';
 
 export default {
   layout: 'default',
-
+  middleware: 'auth',
   components: {
     LoginForm, SignupForm
   },
