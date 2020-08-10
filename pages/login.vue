@@ -14,10 +14,10 @@
           <v-tabs-items v-model="tab">
             <v-tab-item>
               <login-form 
-                :email="email" 
+                :legal_number="legal_number" 
                 :password="password" 
                 :submitForm="login"
-                @update-email="updateEmail"
+                @update-legalnumber="updateLegalNumber"
                 @update-password="(value) => {password = value}"
               />
             </v-tab-item>
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      email: '',
+      legal_number: '',
       password: '',
       tab: null,
       alertSuccess: false
@@ -61,7 +61,7 @@ export default {
     async login() {
       try {
         const response = await this.$auth.login({
-          data: { email: this.email, password: this.password }
+          data: { legal_number: this.legal_number, password: this.password }
         })
         console.log(response)
         if (response.data.success) {
@@ -70,9 +70,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    },
-    updateEmail(value) {
-      this.email = value;
     },
     async signupUser(user) {
       let response = await this.registerUser(user);
@@ -94,6 +91,9 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    updateLegalNumber(value) {
+      this.legal_number = value;
     },
     ...mapActions('users', ['registerUser']),
   },

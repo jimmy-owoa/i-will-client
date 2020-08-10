@@ -9,8 +9,8 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          label="Correo electrónico"
-          v-model="userEmail"
+          label="R.U.N"
+          v-model="userLegalNumber"
           type="text"
           outlined
           dense
@@ -42,14 +42,14 @@
 <script>
 export default {
   props: {
-    email: String,
+    legal_number: String,
     password: String,
     submitForm: Function
   },
   computed: {
-    userEmail: {
-      get() { return this.email },
-      set(value) { this.$emit('update-email', value) }
+    userLegalNumber: {
+      get() { return this.legal_number },
+      set(value) { this.$emit('update-legalnumber', value) }
     },
     userPassword: {
       get() { return this.password },
