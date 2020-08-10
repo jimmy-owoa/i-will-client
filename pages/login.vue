@@ -13,6 +13,9 @@
           </v-tabs>
           <v-tabs-items v-model="tab">
             <v-tab-item>
+              <v-alert type="error" v-model="alertError" dismissible>
+                R.U.N. o contraseña incorrectos
+              </v-alert>
               <login-form
                 :userInfo="userInfo"
                 :validator="$v.userInfo" 
@@ -56,7 +59,8 @@ export default {
         password: '',
       },
       tab: null,
-      alertSuccess: false
+      alertSuccess: false,
+      alertError: false,
     }
   },
   methods: {
@@ -85,6 +89,8 @@ export default {
         console.log(response)
         if (response.data.success) {
           this.$router.push('/listas')
+        } else {
+          this.alertError = true;
         }
       } catch (err) {
         console.log(err)
