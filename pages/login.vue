@@ -13,12 +13,10 @@
           </v-tabs>
           <v-tabs-items v-model="tab">
             <v-tab-item>
-              <login-form 
-                :legal_number="legal_number" 
-                :password="password" 
+              <login-form
+                :userInfo="userInfo"
+                :validator="$v.userInfo" 
                 :submitForm="login"
-                @update-legalnumber="updateLegalNumber"
-                @update-password="(value) => {password = value}"
               />
             </v-tab-item>
             <v-tab-item>
@@ -39,6 +37,8 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate';
+import { required, maxLength, email } from 'vuelidate/lib/validators';
 import { mapActions } from "vuex";
 import LoginForm from '~/components/forms/LoginForm';
 import SignupForm from '~/components/forms/SignupForm';
@@ -51,15 +51,23 @@ export default {
   },
   data() {
     return {
-      legal_number: '',
-      password: '',
+      userInfo: {
+        legal_number: '',
+        password: '',
+      },
       tab: null,
       alertSuccess: false
     }
   },
   methods: {
     login() {
-      this.loginUser(this.legal_number, this.password);
+      this.$v.$touch();
+      
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      this.loginUser(this.userInfo.legal_number, this.userInfo.password);
     },
     async signupUser(user) {
       let response = await this.registerUser(user);
@@ -82,10 +90,15 @@ export default {
         console.log(err)
       }
     },
-    updateLegalNumber(value) {
-      this.legal_number = value;
-    },
     ...mapActions('users', ['registerUser']),
+  },
+  // Validaciones
+  mixins: [validationMixin],
+  validations: {
+    userInfo: {
+      legal_number: {required},
+      password: {required}
+    }
   },
 }
 </script>
