@@ -23,6 +23,9 @@
             </v-tab-item>
             <v-tab-item>
               <v-card flat>
+                <v-alert type="success" v-show="alertSuccess">
+                  Registro Exitoso
+                </v-alert>
                 <signup-form
                   :submitForm="signupUser"
                 />
@@ -36,12 +39,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import LoginForm from '~/components/forms/LoginForm';
 import SignupForm from '~/components/forms/SignupForm';
 
 export default {
-  layout: 'session',
+  layout: 'default',
 
   components: {
     LoginForm, SignupForm
@@ -50,12 +53,12 @@ export default {
     return {
       email: '',
       password: '',
-      tab: null
+      tab: null,
+      alertSuccess: false
     }
   },
   methods: {
     async login() {
-      console.log(this.password)
       try {
         const response = await this.$auth.login({
           data: { email: this.email, password: this.password }
@@ -71,10 +74,28 @@ export default {
     updateEmail(value) {
       this.email = value;
     },
-    signupUser(user) {
-      this.createUser(user);
+    async signupUser(user) {
+      let response = await this.registerUser(user);
+
+      if (response.status == "ok") {
+        this.alertSuccess = true;
+        this.loginUser(user.email, user.password);
+      }
     },
-    ...mapActions('users', ['createUser']),
+    async loginUser(email, password) {
+      try {
+        const response = await this.$auth.login({
+          data: { email: email, password: password }
+        })
+        console.log(response)
+        if (response.data.success) {
+          this.$router.push('/listas')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    ...mapActions('users', ['registerUser']),
   },
 }
 </script>

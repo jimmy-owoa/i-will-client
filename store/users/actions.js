@@ -7,13 +7,10 @@ export async function fetchCurrentUser({ commit }) {
   } finally {}
 }
 
-export async function createUser({ commit }, user) {
-  console.log(user);
+export async function registerUser({ commit }, user) {
   try {
     const { data } = await this.$axios.post('users', user);
-    if (data.status == "ok") {
-      commit("setSignupSuccess", data);
-    }
+    return data;
   } catch (e) {
     commit("usersError", e.message);
   } finally {}
