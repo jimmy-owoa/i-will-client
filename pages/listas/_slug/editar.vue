@@ -8,6 +8,7 @@ import ListForm from "@/components/lists/ListForm";
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
+  layout: 'user',
   middleware: 'auth',
   components: {
     ListForm

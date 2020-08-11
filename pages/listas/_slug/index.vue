@@ -56,6 +56,7 @@ import { mapState, mapActions } from "vuex";
 import Swal from "sweetalert2";
 
 export default {
+  layout: 'user',
   middleware: 'auth',
   data() {
     return {

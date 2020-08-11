@@ -9,23 +9,29 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          label="Correo electrónico"
-          v-model="userEmail"
+          label="R.U.N"
+          v-model="userInfo.legal_number"
           type="text"
           outlined
           dense
           color="grey darken-2"
           background-color="grey lighten-4"
+          required
+          @blur="validator.legal_number.$touch()"
+          :error-messages="legalNumberErrors"
         ></v-text-field>
 
         <v-text-field
           label="Contraseña"
-          v-model="userPassword"
+          v-model="userInfo.password"
           type="password"
           outlined
           dense
           color="grey darken-2"
           background-color="grey lighten-4"
+          required
+          @blur="validator.password.$touch()"
+          :error-messages="passwordErrors"
         ></v-text-field>
       </v-form>
     </v-card-text>
@@ -42,19 +48,23 @@
 <script>
 export default {
   props: {
-    email: String,
-    password: String,
-    submitForm: Function
+    userInfo: Object,
+    submitForm: Function,
+    validator: Object
   },
   computed: {
-    userEmail: {
-      get() { return this.email },
-      set(value) { this.$emit('update-email', value) }
+    legalNumberErrors () {
+      const errors = []
+      if (!this.validator.legal_number.$dirty) return errors
+      !this.validator.legal_number.required && errors.push('R.U.N. es requerido')
+      return errors
     },
-    userPassword: {
-      get() { return this.password },
-      set(value) { this.$emit('update-password', value) }
-    }
+    passwordErrors () {
+      const errors = []
+      if (!this.validator.password.$dirty) return errors
+      !this.validator.password.required && errors.push('Contraseña es requerida.')
+      return errors
+    },
   },
 }
 </script>

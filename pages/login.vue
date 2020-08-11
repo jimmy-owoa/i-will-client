@@ -5,25 +5,33 @@
         <v-card class="elevation-12 mx-auto" max-width="500" height="600">
           <v-tabs background-color="primary" dark v-model="tab" centered>
             <v-tab>
-              Login
+              Iniciar sesión
             </v-tab>
             <v-tab>
-              Sign Up
+              Registrarse
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab">
+            <!-- Login -->
             <v-tab-item>
-              <login-form 
-                :email="email" 
-                :password="password" 
+              <v-alert type="error" v-model="alertError" dismissible>
+                R.U.N. o contraseña incorrectos
+              </v-alert>
+              <login-form
+                :userInfo="userInfo"
+                :validator="$v.userInfo" 
                 :submitForm="login"
-                @update-email="updateEmail"
-                @update-password="(value) => {password = value}"
               />
             </v-tab-item>
+            <!-- Sign Up -->
             <v-tab-item>
               <v-card flat>
-                <v-card-text>Contenidow</v-card-text>
+                <v-alert type="success" v-show="alertSuccess">
+                  Registro Exitoso
+                </v-alert>
+                <signup-form
+                  :submitForm="signupUser"
+                />
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -32,39 +40,72 @@
     </v-row>
   </v-container>
 </template>
+
 <script>
+import { validationMixin } from 'vuelidate';
+import { required, maxLength, email } from 'vuelidate/lib/validators';
+import { mapActions } from "vuex";
 import LoginForm from '~/components/forms/LoginForm';
+import SignupForm from '~/components/forms/SignupForm';
 
 export default {
-  layout: 'session',
-
+  layout: 'default',
+  middleware: 'auth',
   components: {
-    LoginForm
+    LoginForm, SignupForm
   },
   data() {
     return {
-      email: '',
-      password: '',
-      tab: null
+      userInfo: {
+        legal_number: '',
+        password: '',
+      },
+      tab: null,
+      alertSuccess: false,
+      alertError: false,
     }
   },
   methods: {
-    async login() {
-      console.log(this.password)
+    login() {
+      this.$v.$touch();
+      
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      this.loginUser(this.userInfo.legal_number, this.userInfo.password);
+    },
+    async signupUser(user) {
+      let response = await this.registerUser(user);
+
+      if (response.status == "ok") {
+        this.alertSuccess = true;
+        this.loginUser(user.legal_number, user.password);
+      }
+    },
+    async loginUser(legal_number, password) {
       try {
         const response = await this.$auth.login({
-          data: { email: this.email, password: this.password }
+          data: { legal_number: legal_number, password: password }
         })
         console.log(response)
         if (response.data.success) {
           this.$router.push('/listas')
+        } else {
+          this.alertError = true;
         }
       } catch (err) {
         console.log(err)
       }
     },
-    updateEmail(value) {
-      this.email = value;
+    ...mapActions('users', ['registerUser']),
+  },
+  // Validaciones
+  mixins: [validationMixin],
+  validations: {
+    userInfo: {
+      legal_number: {required},
+      password: {required}
     }
   },
 }

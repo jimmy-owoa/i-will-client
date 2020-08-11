@@ -6,3 +6,12 @@ export async function fetchCurrentUser({ commit }) {
     commit("usersError", e.message);
   } finally {}
 }
+
+export async function registerUser({ commit }, user) {
+  try {
+    const { data } = await this.$axios.post('users', user);
+    return data;
+  } catch (e) {
+    commit("usersError", e.message);
+  } finally {}
+}

@@ -25,15 +25,14 @@
       </v-btn>
       <v-toolbar-title v-text="currentUser ? currentUser.email : title" />
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      
+      <v-btn color="info" @click="logout">Salir</v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item @click.native="right = !right">
@@ -80,7 +79,13 @@ export default {
   },
   computed: {
     ...mapState('users', ['currentUser']),
-  }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout();
+      this.$router.push('/login');
+    }
+  },
 }
 </script>
 

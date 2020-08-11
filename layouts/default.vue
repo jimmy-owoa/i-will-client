@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-content class="blue lighten-1">
+    <v-main class="blue lighten-1">
       <nuxt />
-    </v-content>
+    </v-main>
     <v-footer :fixed="fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
