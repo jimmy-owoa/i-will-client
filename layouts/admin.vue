@@ -3,7 +3,9 @@
     <admin-navbar />
     
     <v-main class="">
-      <nuxt />
+      <v-container>
+        <nuxt />
+      </v-container>
     </v-main>
   </v-app>
 </template>
