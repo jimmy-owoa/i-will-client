@@ -90,7 +90,11 @@ export default {
         })
         console.log(response)
         if (response.data.success) {
-          this.$router.push('/listas')
+          if (this.$nuxt.$auth.user.roles.includes("admin")) {
+            this.$router.push('/admin')
+          } else {
+            this.$router.push('/listas')
+          }
         } else {
           this.alertError = true;
         }

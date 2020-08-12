@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Default",
@@ -37,9 +36,6 @@ export default {
       title: "Vuetify.js"
     };
   },
-  computed: {
-    ...mapState('users', ['currentUser']),
-  }
 }
 </script>
 
