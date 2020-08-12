@@ -30,7 +30,7 @@
               <v-autocomplete
                 label="Región"
                 v-model="group.region_id"
-                :items="items"
+                :items="getRegions"
                 item-text="name"
                 item-value="id"
                 outlined
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   layout: 'admin',
   middleware: 'auth',
@@ -87,6 +89,15 @@ export default {
       image: null,
       items: ['foo', 'bar', 'fizz', 'buzz'],
     }
-  }
+  },
+  computed: {
+    ...mapGetters("groups", ["getRegions"]),
+  },
+  methods: {
+    ...mapActions("groups", ["fetchRegions"]),
+  },
+  created() {
+    this.fetchRegions();
+  },
 }
 </script>
