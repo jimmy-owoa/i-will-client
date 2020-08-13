@@ -66,6 +66,7 @@
             class="py-5 mx-auto"
             color="info"
             block
+            @click="submitGroup"
           >Crear grupo</v-btn>
         </v-card-actions>
       </v-card>
@@ -111,6 +112,7 @@ export default {
   },
   methods: {
     ...mapActions("groups", ["fetchRegions"]),
+    ...mapActions("groups", ["createGroup"]),
     validateImage(event){
       if (this.image) {
         const fileType = this.image.type;
@@ -131,6 +133,19 @@ export default {
         }
       } else {
         this.preview_image = null;
+      }
+    },
+    async submitGroup(){
+      const formData = new FormData();
+      formData.append("group[name]", this.group.name);
+      formData.append("group[description]", this.group.description);
+      formData.append("group[address]", this.group.address);
+      formData.append("group[commune_id]", this.group.commune_id);
+      formData.append("group[image]", this.image);
+
+      const response = await this.createGroup(formData);
+      if (response.status == "ok") {
+        this.$router.push('/admin')
       }
     },
   },
