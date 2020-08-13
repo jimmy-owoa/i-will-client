@@ -29,10 +29,10 @@
 
               <v-autocomplete
                 label="Región"
-                v-model="group.region_id"
+                v-model="communes"
                 :items="getRegions"
                 item-text="name"
-                item-value="id"
+                item-value="communes"
                 outlined
                 dense
                 color="grey darken-2"
@@ -41,11 +41,15 @@
 
               <v-autocomplete
                 label="Comuna"
-                :items="items"
+                v-model="group.commune_id"
+                :items="communes"
+                item-text="name"
+                item-value="id"
                 outlined
                 dense
                 color="grey darken-2"
                 background-color="grey lighten-4"
+                :disabled="communes ? false : true"
               ></v-autocomplete>
 
               <v-textarea
@@ -84,10 +88,9 @@ export default {
         description: '',
         address: '',
         commune_id: '',
-        region_id: null
       },
       image: null,
-      items: ['foo', 'bar', 'fizz', 'buzz'],
+      communes: null
     }
   },
   computed: {

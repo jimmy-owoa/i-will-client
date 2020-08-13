@@ -10,6 +10,9 @@
       <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Administrador</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn color="info" to="/grupos/new">
+        Crear Grupo
+      </v-btn>
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
