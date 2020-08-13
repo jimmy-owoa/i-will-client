@@ -42,33 +42,34 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate';
-import { required, maxLength, email } from 'vuelidate/lib/validators';
+import { validationMixin } from "vuelidate";
+import { required, maxLength, email } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
-import LoginForm from '~/components/forms/LoginForm';
-import SignupForm from '~/components/forms/SignupForm';
+import LoginForm from "~/components/forms/LoginForm";
+import SignupForm from "~/components/forms/SignupForm";
 
 export default {
-  layout: 'default',
-  middleware: 'auth',
+  layout: "default",
+  middleware: "auth",
   components: {
-    LoginForm, SignupForm
+    LoginForm,
+    SignupForm,
   },
   data() {
     return {
       userInfo: {
-        legal_number: '',
-        password: '',
+        legal_number: "",
+        password: "",
       },
       tab: null,
       alertSuccess: false,
       alertError: false,
-    }
+    };
   },
   methods: {
     login() {
       this.$v.$touch();
-      
+
       if (this.$v.$invalid) {
         return;
       }
@@ -86,9 +87,9 @@ export default {
     async loginUser(legal_number, password) {
       try {
         const response = await this.$auth.login({
-          data: { legal_number: legal_number, password: password }
-        })
-        console.log(response)
+          data: { legal_number: legal_number, password: password },
+        });
+        console.log(response);
         if (response.data.success) {
           if (this.$nuxt.$auth.user.roles.includes("admin")) {
             this.$router.push('/admin')
@@ -99,18 +100,18 @@ export default {
           this.alertError = true;
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
-    ...mapActions('users', ['registerUser']),
+    ...mapActions("users", ["registerUser"]),
   },
   // Validaciones
   mixins: [validationMixin],
   validations: {
     userInfo: {
-      legal_number: {required},
-      password: {required}
-    }
+      legal_number: { required },
+      password: { required },
+    },
   },
-}
+};
 </script>
