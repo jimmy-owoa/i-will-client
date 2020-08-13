@@ -25,3 +25,12 @@ export async function createGroup({ commit }, group) {
   } finally { }
 }
 
+export async function fetchGroup({ commit }, slug) {
+  try {
+    const { data } = await this.$axios.get(`groups/${slug}`);
+    commit("setGroup", data.group);
+  } catch (e) {
+    commit("groupsError", e.message);
+  } finally {}
+}
+

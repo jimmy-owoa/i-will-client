@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="6">
-      <h2>Crear grupo</h2>
+      <h2>{{ titleForm }}</h2>
 
       <v-card flat>
         <v-card-text>
@@ -26,7 +26,7 @@
               background-color="grey lighten-4"
             ></v-text-field>
 
-            <v-autocomplete
+            <!-- <v-autocomplete
               label="Región"
               v-model="communes"
               :items="getRegions"
@@ -49,7 +49,7 @@
               color="grey darken-2"
               background-color="grey lighten-4"
               :disabled="communes ? false : true"
-            ></v-autocomplete>
+            ></v-autocomplete> -->
 
             <v-textarea
               label="Descripción"
@@ -66,8 +66,8 @@
             class="py-5 mx-auto"
             color="info"
             block
-            @click="submitGroup"
-          >Crear grupo</v-btn>
+            @click="submitForm"
+          >{{ titleButton }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -93,14 +93,14 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   layout: 'admin',
   middleware: 'auth',
+  props: {
+    titleForm: String,
+    titleButton: String,
+    group: Object,
+    submitForm: Function,
+  },
   data() {
     return {
-      group: {
-        name: '',
-        description: '',
-        address: '',
-        commune_id: '',
-      },
       image: null,
       preview_image: null,
       error: null,
@@ -112,7 +112,6 @@ export default {
   },
   methods: {
     ...mapActions("groups", ["fetchRegions"]),
-    ...mapActions("groups", ["createGroup"]),
     validateImage(event){
       if (this.image) {
         const fileType = this.image.type;
@@ -133,19 +132,6 @@ export default {
         }
       } else {
         this.preview_image = null;
-      }
-    },
-    async submitGroup(){
-      const formData = new FormData();
-      formData.append("group[name]", this.group.name);
-      formData.append("group[description]", this.group.description);
-      formData.append("group[address]", this.group.address);
-      formData.append("group[commune_id]", this.group.commune_id);
-      formData.append("group[image]", this.image);
-
-      const response = await this.createGroup(formData);
-      if (response.status == "ok") {
-        this.$router.push('/grupos')
       }
     },
   },
