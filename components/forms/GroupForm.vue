@@ -25,11 +25,13 @@
               color="grey darken-2"
               background-color="grey lighten-4"
             ></v-text-field>
-
-            <!-- <v-autocomplete
+            <!-- {{ regions.find(region => region.id === group.region_id) }} -->
+            {{ group.region_id }}
+            
+            <v-autocomplete
               label="Región"
-              v-model="communes"
-              :items="getRegions"
+              v-model="region"
+              :items="regions"
               item-text="name"
               item-value="communes"
               outlined
@@ -48,8 +50,7 @@
               dense
               color="grey darken-2"
               background-color="grey lighten-4"
-              :disabled="communes ? false : true"
-            ></v-autocomplete> -->
+            ></v-autocomplete>
 
             <v-textarea
               label="Descripción"
@@ -63,11 +64,16 @@
 
         <v-card-actions>
           <v-btn 
-            class="py-5 mx-auto"
+            class=""
             color="info"
-            block
             @click="submitForm"
           >{{ titleButton }}</v-btn>
+
+          <v-btn 
+            class=""
+            color="secondary"
+            to="/grupos"
+          >Volver</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -98,6 +104,7 @@ export default {
     titleButton: String,
     group: Object,
     submitForm: Function,
+    regions: Array
   },
   data() {
     return {
@@ -108,10 +115,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("groups", ["getRegions"]),
+    region: {
+      get() {
+        return this.regions.find(region => region.id === this.group.region_id)
+      },
+      set(value) {
+        this.communes = value;
+        return value;
+      }
+    }
   },
   methods: {
-    ...mapActions("groups", ["fetchRegions"]),
     validateImage(event){
       if (this.image) {
         const fileType = this.image.type;
@@ -134,9 +148,6 @@ export default {
         this.preview_image = null;
       }
     },
-  },
-  created() {
-    this.fetchRegions();
   },
 }
 </script>
