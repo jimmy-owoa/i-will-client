@@ -53,7 +53,6 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "Default",
   data() {
     return {
       clipped: false,
