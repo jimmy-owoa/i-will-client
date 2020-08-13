@@ -7,3 +7,7 @@ export function listsError(state, payload) {
   state.errorMessage = payload;
   state.regions = [];
 }
+
+export function setGroups(state, groups) {
+  state.groups = groups;
+}

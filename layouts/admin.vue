@@ -2,7 +2,7 @@
   <v-app>
     <admin-navbar />
     
-    <v-main class="">
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>

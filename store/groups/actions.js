@@ -6,3 +6,12 @@ export async function fetchRegions({ commit }) {
     commit("groupsError", e.message);
   } finally {}
 }
+
+export async function fetchGroups({ commit }) {
+  try {
+    const { data } = await this.$axios.get('groups');
+    commit("setGroups", data);
+  } catch (e) {
+    commit("groupsError", e.message);
+  } finally {}
+}
