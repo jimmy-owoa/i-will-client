@@ -11,3 +11,7 @@ export function groupsError(state, payload) {
 export function setGroups(state, groups) {
   state.groups = groups;
 }
+
+export function setSelectedGroup(state, group) {
+  state.selectedGroups = group;
+}
