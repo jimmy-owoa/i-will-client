@@ -10,7 +10,7 @@
             <div class="grey--text pl-4">({{group.members}} miembros)</div>
           </v-row>
         </v-card-title>
-
+        
         <v-card-text>
           <div class="my-4 subtitle-1">
             <v-icon>place</v-icon>

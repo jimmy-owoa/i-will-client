@@ -4,7 +4,7 @@ export async function fetchRegions({ commit }) {
     commit("setRegions", data.regions);
   } catch (e) {
     commit("groupsError", e.message);
-  } finally {}
+  } finally { }
 }
 
 export async function fetchGroups({ commit }) {
@@ -13,7 +13,7 @@ export async function fetchGroups({ commit }) {
     commit("setGroups", data);
   } catch (e) {
     commit("groupsError", e.message);
-  } finally {}
+  } finally { }
 }
 
 export async function createGroup({ commit }, group) {
@@ -22,5 +22,6 @@ export async function createGroup({ commit }, group) {
     return data;
   } catch (e) {
     commit("groupsError", e.message);
-  } finally {}
+  } finally { }
 }
+
