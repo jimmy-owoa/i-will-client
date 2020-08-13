@@ -34,3 +34,12 @@ export async function fetchGroup({ commit }, slug) {
   } finally {}
 }
 
+export async function updateGroup({commit}, group){
+  try {
+    const { data } = await this.$axios.put(`groups/${group.slug}`, group.data);
+    return data;
+  } catch (e) {
+    commit("groupsError", e.message);
+  } finally {}
+}
+

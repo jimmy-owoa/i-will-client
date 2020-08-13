@@ -22,6 +22,7 @@
 
         <v-card-actions>
           <v-btn color="deep-purple lighten-2" text @click="showGroup">Ver</v-btn>
+          <v-btn color="deep-purple lighten-2" text @click="editGroup(group.slug)">Editar</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -45,6 +46,9 @@ export default {
     showGroup() {
 
     },
+    editGroup(slug) {
+      this.$router.push(`/grupos/${slug}/editar`)
+    }
   },
   created() {
     this.fetchGroups();
